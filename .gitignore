@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.txt
+*.fasta
+*.fa
+*.dbg
+*.cdbg
+*.dump
+output/
+dbg_indexer.py
