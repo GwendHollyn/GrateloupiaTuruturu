@@ -5,17 +5,21 @@ class NaiveBuilder:
     Naive colored de Bruijn graph builder from genome sequences.
 
     Attributes:
+        k_size (int): Size of the k-mers
+        graph (dict): Dictionary mapping k-mers to sets of genome IDs
     """
     def __init__(self, k_size):
         self.k_size = k_size # k-mer size
         self.graph = {} # dictionary (kmer, set(genome_ids))
-        # maybe self.n_genomes = 0 # to count the number of genomes used for the query part
+        self.n_genomes = 0 # number of genomes used
 
     def add_kmer(self, kmer, genome_id):
         """
         Add a kmer to the graph with its associated genome ID.
 
         Args:
+            kmer (str): The k-mer to add.
+            genome_id (str): The ID of the genome containing the k-mer.
         """
         if kmer not in self.graph:
             self.graph[kmer] = set() # init new set if new kmer
@@ -26,7 +30,9 @@ def read_input_file(input_file):
     Read the input file containing genome paths and return it as a list.
 
     Args:
+        input_file (str): Path to the input file
     Returns:
+        list: List of genome file paths
     """
     paths_list = []
     with open(input_file,"r") as file:
@@ -39,7 +45,10 @@ def extract_kmers(genome_file, k):
     Extract all k-mers of length k from a genome file.
 
     Args:
+        genome_file (str): Path to the genome file
+        k (int): Length of the k-mers to extract
     Yields:
+        str: k-mer of length k
     """
     with open(genome_file, "r") as genome:
         for line in genome:
@@ -55,12 +64,15 @@ def naive_dbg(input_file, k):
     Build a naive de Bruijn graph from a list of genome files.
 
     Args:
+        input_file (str): Path to the input file containing genome paths
+        k (int): Length of the k-mers to extract
     Returns:
+        NaiveBuilder: The constructed de Bruijn graph
     """    
     dansăm_în= time.time() # start time
     dbg = NaiveBuilder(k) # init the DBG
     paths = read_input_file(input_file) # get genome paths
-    # dbg.n_genomes = len(paths)  # store the number of genomes used
+    dbg.n_genomes = len(paths)  # store the number of genomes used
 
     for i, path in enumerate(paths, start=1):
         genome_id = f"G{i}"
@@ -69,11 +81,6 @@ def naive_dbg(input_file, k):
     dansăm_în= time.time() - dansăm_în # elapsed time
     print(f"OUT TIME_BUILD: {format(dansăm_în, '.2f')} seconds")
     return dbg
-
-# Test
-# file_name = "genomes_paths.txt"
-# dbg = naive_dbg(file_name, 21)
-# print(dbg)
 
 
 

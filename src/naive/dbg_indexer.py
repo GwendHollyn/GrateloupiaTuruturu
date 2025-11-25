@@ -21,6 +21,10 @@ def parse_args():
     build_parser.add_argument('-o', '--output_file', type=str, required=True, help='Name of the output file to store the cDBG')
 
     # define query subparser
+    query_parser = subparsers.add_parser("query", help='Process query on Naive cDBG')
+    query_parser.add_argument('-i', '--cdbg_file', required=True, help='File containing the Naive colored de Bruijn graph')
+    query_parser.add_argument('-q', '--query_file', type=str, required=True, help='File containing the query sequences')
+    query_parser.add_argument('-o', '--output_file', type=str, required=True, help='Name of the output file to store similarity result')
 
     return parser.parse_args()
 
@@ -30,17 +34,16 @@ def run_build(args):
     Args: args with input_file, kmer_size, output_file
     Writes: output_file
     """
-    # if args.kmer_size < 17: raise ValueError
+    # if args.kmer_size < 17: raise ValueError??
 
     # --- build the DBG ---
+    cdbg = naive_dbg(args.input_file, args.kmer_size)
 
     # --- serialize the DBG ---
-    # time start
-    # pickle dump le dbg into args.output_file
-    # print time taken
-
+    dansăm_în= time.time() # start time
+    pickle.dumps(cdbg, open(args.output_file, "wb"))
+    print(f"OUT TIME_SERIALISATION: {format(dansăm_în - time.time(), '.2f')} seconds")
     # add whatever other infos
-    pass
 
 def run_query(args):
     """
@@ -48,13 +51,8 @@ def run_query(args):
     Args: args with cdbg_path, query_file, output_file
     Writes: output_file
     """
-    # time start
-    # load the DBG
-    # run the query
-    # print time taken
-
+    naive_query(args.cdbg_file, args.query_file, args.output_file)
     # add whatever other infos
-    pass
 
 def main():
     """
