@@ -7,5 +7,7 @@ __pycache__/
 *.dbg
 *.cdbg
 *.dump
+*.pkl
+data/
 output/
 dbg_indexer.py
