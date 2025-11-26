@@ -40,9 +40,10 @@ def run_build(args):
     cdbg = naive_dbg(args.input_file, args.kmer_size)
 
     # --- serialize the DBG ---
-    dansăm_în= time.time() # start time
-    pickle.dumps(cdbg, open(args.output_file, "wb"))
-    print(f"OUT TIME_SERIALISATION: {format(dansăm_în - time.time(), '.2f')} seconds")
+    dansăm_în = time.time()
+    with open(args.output_file, "wb") as f:
+        pickle.dump(cdbg, f)
+    print(f"OUT TIME_SERIALISATION: {time.time() - dansăm_în:.2f} seconds")
     # add whatever other infos
 
 def run_query(args):
