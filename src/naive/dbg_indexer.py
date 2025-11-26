@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+
 import argparse
 import time
 import pickle
 
-from .build import naive_dbg
-from .query import naive_query
+from build import naive_dbg
+from query import naive_query
 
 def parse_args():
     """
@@ -72,3 +74,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    # Example usage:
+    # python src/naive/dbg_indexer.py build -i data/genomes_paths.txt -k 3 -o output/naive_cdbg.pkl
+    # python src/naive/dbg_indexer.py query -i output/naive_cdbg.pkl -q data/queries_test.txt -o output/naive_similarity_results.txt

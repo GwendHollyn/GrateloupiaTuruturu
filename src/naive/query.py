@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pickle
 
 def compute_similarity(cdbg, query):
