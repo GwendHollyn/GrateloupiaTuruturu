@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from Bio import SeqIO
 import pickle
 
 def compute_similarity(cdbg, query):
@@ -51,10 +51,9 @@ def get_queries(query_file):
     query_list = []
     i = 1
     with open(query_file,"r") as file:
-        for query in file:
-            if not query.startswith('>'): # skip header lines
-               query_list.append((f"query_n{i}" , query))
-               i+=1
+        for query in SeqIO.parse(file, "fasta"):
+            query_list.append((f"query_n{i}" , query.seq))
+            i+=1
     return query_list
 
 def naive_query(cdbg_path, query_file, output_file):
@@ -77,5 +76,5 @@ def naive_query(cdbg_path, query_file, output_file):
     with open(output_file, "w") as output:
         for query in queries:
             seq_id, scores = compute_similarity(cdbg, query)
-            scores_as_str = "\t".join(f"{s:.3f}" for s in scores) #insert tab between scores
+            scores_as_str = "\t".join(f"{s:.2f}" for s in scores) #insert tab between scores
             output.write(f"{seq_id}\t{scores_as_str}\n") # write to output file
