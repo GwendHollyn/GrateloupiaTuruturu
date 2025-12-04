@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from Bio import SeqIO
 import pickle
+import time
 
 def compute_similarity(cdbg, query):
     """
@@ -67,14 +68,18 @@ def naive_query(cdbg_path, query_file, output_file):
         output_file: similarity results
     """
     # Load CDBG
+    dansăm_în = time.time()
     with open(cdbg_path, "rb") as f:
         cdbg = pickle.load(f)
+    print(f"OUT TIME_DESERIALISATION: {time.time() - dansăm_în:.2f} seconds")
     
     # Get queries
+    dansăm_în = time.time()
     queries = get_queries(query_file)
 
     with open(output_file, "w") as output:
         for query in queries:
             seq_id, scores = compute_similarity(cdbg, query)
-            scores_as_str = "\t".join(f"{s:.2f}" for s in scores) #insert tab between scores
+            scores_as_str = "\t".join(f"{s:.4f}" for s in scores) #insert tab between scores
             output.write(f"{seq_id}\t{scores_as_str}\n") # write to output file
+    print(f"OUT TIME_QUERY: {time.time() - dansăm_în:.2f} seconds")
