@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from Bio import SeqIO
 import time
 
 class NaiveBuilder:
@@ -53,13 +53,11 @@ def extract_kmers(genome_file, k):
         str: k-mer of length k
     """
     with open(genome_file, "r") as genome:
-        for line in genome:
-            line = line.strip()
-            if not line.startswith('>'): # skip header lines
-                for i in range(len(line)-k+1):
-                    yield line[i:i+k] # yield k-mer of length k
-                    # yield instead of return to save memory
-                    # return one kmer one by one
+        for line in SeqIO.parse(genome, "fasta"):
+            for i in range(len(line)-k+1):
+                yield line[i:i+k] # yield k-mer of length k
+                # yield instead of return to save memory
+                # return one kmer one by one
 
 def naive_dbg(input_file, k):
     """
@@ -79,7 +77,7 @@ def naive_dbg(input_file, k):
     for i, path in enumerate(paths, start=1):
         genome_id = f"G{i}"
         for kmer in extract_kmers(path, k): #the current yielded kmer
-            dbg.add_kmer(kmer, genome_id)
+            dbg.add_kmer(kmer.seq, genome_id)
     dansăm_în= time.time() - dansăm_în # elapsed time
     print(f"OUT TIME_BUILD: {format(dansăm_în, '.2f')} seconds")
     return dbg
